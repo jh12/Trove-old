@@ -1,3 +1,4 @@
+using System;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +21,15 @@ namespace Trove.Api
             IHostBuilder hostBuilder = Host.CreateDefaultBuilder(args)
                 .UseSerilog()
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                .ConfigureAppConfiguration(builder => builder.AddConfiguration(config))
+                .ConfigureAppConfiguration(builder =>
+                {
+                    string? configurationPath = Environment.GetEnvironmentVariable("configurationpath");
+
+                    if (!string.IsNullOrEmpty(configurationPath))
+                        builder.SetBasePath(configurationPath);
+
+                    builder.AddConfiguration(config);
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
