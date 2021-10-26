@@ -5,6 +5,12 @@ VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trove.Api", "Trove.Api\Trove.Api.csproj", "{AA3F321C-EF69-4081-B268-1DBBD35DCC64}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backends", "Backends", "{21346384-E03A-4F5B-9352-D994C7D6297C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trove.Twitter", "Backends\Trove.Twitter\Trove.Twitter.csproj", "{82CC5E6D-D868-4615-8D42-A85DBB27E8C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trove.Shared", "Trove.Shared\Trove.Shared.csproj", "{3656F6CE-5FE2-4CE8-9EA0-B6BBC7E96DD9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +21,20 @@ Global
 		{AA3F321C-EF69-4081-B268-1DBBD35DCC64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA3F321C-EF69-4081-B268-1DBBD35DCC64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA3F321C-EF69-4081-B268-1DBBD35DCC64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82CC5E6D-D868-4615-8D42-A85DBB27E8C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82CC5E6D-D868-4615-8D42-A85DBB27E8C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82CC5E6D-D868-4615-8D42-A85DBB27E8C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82CC5E6D-D868-4615-8D42-A85DBB27E8C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3656F6CE-5FE2-4CE8-9EA0-B6BBC7E96DD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3656F6CE-5FE2-4CE8-9EA0-B6BBC7E96DD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3656F6CE-5FE2-4CE8-9EA0-B6BBC7E96DD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3656F6CE-5FE2-4CE8-9EA0-B6BBC7E96DD9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{82CC5E6D-D868-4615-8D42-A85DBB27E8C3} = {21346384-E03A-4F5B-9352-D994C7D6297C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {396287B8-1A02-4B52-B373-A227D0E00149}

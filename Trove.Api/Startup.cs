@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Trove.Twitter;
 
 namespace Trove.Api
 {
@@ -30,6 +31,7 @@ namespace Trove.Api
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule(new ApiModule(Configuration));
+            builder.RegisterModule(new TwitterModule(Configuration));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
