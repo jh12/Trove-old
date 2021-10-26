@@ -4,10 +4,10 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim-amd64 AS publish
 ARG RELEASE_VERSION
 WORKDIR /src
-COPY ["Trove/Trove.Api.csproj", "Trove/"]
-RUN dotnet restore "Trove/Trove.Api.csproj"
+COPY ["Trove.Api/Trove.Api.csproj", "Trove.Api/"]
+RUN dotnet restore "Trove.Api/Trove.Api.csproj"
 COPY . .
-WORKDIR "/src/Trove"
+WORKDIR "/src/Trove.Api"
 RUN dotnet publish "Trove.Api.csproj" -c Release -p:VersionPrefix=$RELEASE_VERSION -o /app/publish
 
 FROM base AS final
