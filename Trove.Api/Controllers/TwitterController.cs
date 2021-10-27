@@ -41,10 +41,16 @@ namespace Trove.Api.Controllers
 
             NewsCreator? creator = newsItems.FirstOrDefault()?.Creator;
 
-            SyndicationFeed feed = new SyndicationFeed($"Tweets by {creator.Name}", creator.Description, creator.Url);
+            SyndicationFeed feed = new SyndicationFeed($"Tweets by {creator.Name}", creator.Description, creator.Url)
+            {
+                ImageUrl = creator.ProfileImage
+            };
 
             SyndicationItem[] items = newsItems
-                .Select(i => new SyndicationItem(i.Title, contentFunc(i), i.Source, i.Id, i.CreatedAt))
+                .Select(i => new SyndicationItem(i.Title, contentFunc(i), i.Source, i.Id, i.CreatedAt)
+                {
+                    PublishDate = i.CreatedAt.ToUniversalTime()
+                })
                 .ToArray();
 
             feed.Items = items;
@@ -56,9 +62,10 @@ namespace Trove.Api.Controllers
         {
             StringBuilder builder = new StringBuilder(newsItem.Content);
 
+            // TODO: Move to Twitter backend
             foreach (NewsMedia media in newsItem.Media)
             {
-                string linkStr = $"![]({media.Url})";
+                string linkStr = $"![Media]({media.Url})";
 
                 if (builder.Capacity < media.UrlStart)
                     builder.Append(linkStr);

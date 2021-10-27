@@ -11,11 +11,11 @@ namespace Trove.Shared.Models
         public string Title { get; }
         public string Content { get; }
 
-        public DateTime CreatedAt { get; }
+        public DateTimeOffset CreatedAt { get; }
 
         public NewsMedia[] Media { get; }
 
-        public NewsItem(string id, Uri source, NewsCreator creator, string title, string content, DateTime createdAt, NewsMedia[] media)
+        public NewsItem(string id, Uri source, NewsCreator creator, string title, string content, DateTimeOffset createdAt, NewsMedia[] media)
         {
             Id = id;
             Source = source;

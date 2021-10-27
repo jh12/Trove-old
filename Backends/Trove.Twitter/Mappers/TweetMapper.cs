@@ -19,7 +19,7 @@ namespace Trove.Twitter.Mappers
                 Map(tweet.CreatedBy),
                 tweet.Text, // TODO: Trim
                 tweet.Text,
-                tweet.CreatedAt.UtcDateTime,
+                tweet.CreatedAt,
                 tweet.Media.Select(Map).ToArray());
         }
 
