@@ -26,6 +26,8 @@ namespace Trove.Api
                 {
                     options.JsonSerializerOptions.WriteIndented = true;
                 });
+
+            services.AddMemoryCache();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

@@ -43,7 +43,8 @@ namespace Trove.Api.Controllers
 
             SyndicationFeed feed = new SyndicationFeed($"Tweets by {creator.Name}", creator.Description, creator.Url)
             {
-                ImageUrl = creator.ProfileImage
+                ImageUrl = creator.ProfileImage,
+                BaseUri = new Uri($"http://twitter.com/{username}")
             };
 
             SyndicationItem[] items = newsItems

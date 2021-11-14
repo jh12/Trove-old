@@ -11,6 +11,12 @@ WORKDIR "/src/Trove.Api"
 RUN dotnet publish "Trove.Api.csproj" -c Release -p:VersionPrefix=$RELEASE_VERSION -o /app/publish
 
 FROM base AS final
+
+RUN addgroup --system --gid 1000 netcoregroup \
+&& adduser --system --uid 1000 --ingroup netcoregroup --shell /bin/sh netcoreuser
+
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+USER 1000
 ENTRYPOINT ["dotnet", "Trove.Api.dll"]

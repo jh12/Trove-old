@@ -1,34 +1,42 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 using Trove.Shared.Models;
 using Trove.Twitter.Mappers;
 using Tweetinvi;
 using Tweetinvi.Models;
-using Tweetinvi.Models.V2;
 using Tweetinvi.Parameters;
-using Tweetinvi.Parameters.V2;
 
 namespace Trove.Twitter
 {
     public class TwitterService
     {
         private readonly ITwitterClient _client;
+        private readonly IMemoryCache _memoryCache;
 
-        public TwitterService(ITwitterClient client)
+        public TwitterService(ITwitterClient client, IMemoryCache memoryCache)
         {
             _client = client;
+            _memoryCache = memoryCache;
         }
 
         public async Task<NewsItem[]> GetUserTweetsAsync(string username, CancellationToken cancellationToken)
-        {            
-            ITweet[] tweets = await _client.Timelines.GetUserTimelineAsync(new GetUserTimelineParameters(username)
-            {
-                ExcludeReplies = true,
-                PageSize = 50
-            });
+        {
+            string cacheKey = $"twitter_{username.ToLower()}";
 
-            return tweets.Select(TweetMapper.Map).ToArray();
+            async Task<NewsItem[]> GetNewsItems(ICacheEntry entry)
+            {
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(15);
+
+                ITweet[] tweets = await _client.Timelines.GetUserTimelineAsync(new GetUserTimelineParameters(username) { ExcludeReplies = true, IncludeRetweets = true, PageSize = 50 });
+
+                NewsItem[] newsItems = tweets.Select(TweetMapper.Map).ToArray();
+                return newsItems;
+            }
+
+            return await _memoryCache.GetOrCreateAsync(cacheKey, GetNewsItems);
         }
     }
 }
