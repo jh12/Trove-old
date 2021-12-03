@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Trove.Twitter;
+using Trove.Twitter.Services;
 
 namespace Trove.Api
 {
@@ -28,12 +29,16 @@ namespace Trove.Api
                 });
 
             services.AddMemoryCache();
+
+            services.Configure<TwitterOptions>(Configuration.GetSection(TwitterOptions.Twitter));
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule(new ApiModule(Configuration));
-            builder.RegisterModule(new TwitterModule(Configuration));
+
+            TwitterOptions twitterOptions = Configuration.GetSection(TwitterOptions.Twitter).Get<TwitterOptions>();
+            builder.RegisterModule(new TwitterModule(twitterOptions, Log.Logger));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

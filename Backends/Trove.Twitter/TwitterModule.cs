@@ -1,39 +1,42 @@
 ﻿using Autofac;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Serilog;
+using Trove.Shared.Services;
+using Trove.Twitter.Services;
 using Tweetinvi;
-using Tweetinvi.Logic;
 using Tweetinvi.Models;
 
 namespace Trove.Twitter
 {
     public class TwitterModule : Module
     {
-        private readonly IConfiguration _configuration;
+        private readonly TwitterOptions _options;
+        private readonly ILogger _logger;
 
-        public TwitterModule(IConfiguration configuration)
+        public TwitterModule(TwitterOptions options, ILogger logger)
         {
-            _configuration = configuration;
+            _options = options;
+            _logger = logger.ForContext<TwitterModule>();
         }
 
         protected override void Load(ContainerBuilder builder)
         {
-            IConfigurationSection twitterSection = _configuration.GetSection("Twitter");
-
-            if (!twitterSection.Exists())
+            if (_options == null)
             {
-                // TODO: Log warning
+                _logger.Error("No options defined for section \"Twitter\"");
+
                 return;
             }
 
-            var credentials = new ReadOnlyConsumerCredentials(twitterSection["Key"], twitterSection["Secret"], "AAAAAAAAAAAAAAAAAAAAALh2VAEAAAAAIIUA4KHoz4cKHrGWrhH9j%2BY3X6s%3DEIpzZe0pLJhfZ2nIKFYhwxk051Qi0WsVCuSsnmT0agU57ZePvL");
+            var credentials = new ReadOnlyConsumerCredentials(_options.Key, _options.Secret, _options.BearerToken);
 
             TwitterClient twitterClient = new TwitterClient(credentials);
             var readOnlyTwitterCredentials = twitterClient.Credentials;
 
             builder.RegisterInstance(twitterClient).As<ITwitterClient>().SingleInstance();
 
-            // TODO: Make per request
-            builder.RegisterType<TwitterService>().SingleInstance();
+            builder.RegisterType<TwitterService>().As<ITwitterService>().SingleInstance();
+            builder.RegisterType<TwitterCacheRefresherService>().As<IHostedService>().SingleInstance(); 
         }
     }
 }
