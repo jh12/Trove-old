@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.AspNetCore.Mvc;
 using Trove.Shared.Models;
-using Trove.Twitter;
+using Trove.Shared.Services;
 
 namespace Trove.Api.Controllers
 {
@@ -16,9 +16,9 @@ namespace Trove.Api.Controllers
     [Route("rss/twitter")]
     public class TwitterController : ControllerBase
     {
-        private readonly TwitterService _twitterService;
+        private readonly ITwitterService _twitterService;
 
-        public TwitterController(TwitterService twitterService)
+        public TwitterController(ITwitterService twitterService)
         {
             _twitterService = twitterService;
         }

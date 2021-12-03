@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
-using Serilog;
 using Trove.Shared.Models;
 using Trove.Shared.Services;
 using Trove.Twitter.Mappers;
