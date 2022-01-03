@@ -68,7 +68,7 @@ namespace Trove.Api.Controllers
             {
                 string linkStr = $"![Media]({media.Url})";
 
-                if (builder.Capacity < media.UrlStart)
+                if (builder.Length < media.UrlStart)
                     builder.Append(linkStr);
                 else
                     builder.Insert(media.UrlStart, linkStr);
